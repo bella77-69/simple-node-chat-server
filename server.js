@@ -23,3 +23,12 @@ app.use(function(req, res, next) {
 });
 
 var io = require('socket.io')(server)
+
+//two variables to store chat room message data & current connect users
+
+var chatRoomData = []
+var connectedClients = {}
+
+io.on('connection', (client) => {
+    
+})
