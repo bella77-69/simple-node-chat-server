@@ -2,10 +2,18 @@
   "name": "simple-node-chat-server",
   "version": "1.0.0",
   "description": "A simple node server for chat room app powered by socket.io",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "bella77-69",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "express": "^4.17.2",
+    "path": "^0.12.7",
+    "socket.io": "^4.4.1",
+    "unique-names-generator": "^4.6.0",
+    "uuid-random": "^1.3.2"
+  }
 }
