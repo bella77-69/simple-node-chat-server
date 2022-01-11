@@ -1,0 +1,11 @@
+{
+  "name": "simple-node-chat-server",
+  "version": "1.0.0",
+  "description": "A simple node server for chat room app powered by socket.io",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "bella77-69",
+  "license": "ISC"
+}
