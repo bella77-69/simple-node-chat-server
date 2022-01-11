@@ -28,7 +28,7 @@ class ChatRoom extends Component {
 	}
 
 	clearChatData(){
-		
+		socket.emit("ClearChat")
 	}
 
 	render(){

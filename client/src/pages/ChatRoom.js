@@ -9,6 +9,7 @@ import { Row, Container } from 'react-bootstrap';
 import CurrentUserText from '../components/CurrentUserText'
 import OtherUserText from '../components/OtherUserText'
 import ChatNotification from '../components/ChatNotification'
+import {socket} from '../services/socket' 
 
 let styles = {
 	chatRoomContainer: {
@@ -93,12 +94,35 @@ class ChatRoom extends Component {
 		//If user does not have a userid and username saved in local storage, create them for them
 		if(!userIDVal){
 
-	      
-	    } 
-	    else {
-	    	
-	    }
+			socket.on("SetUserData", userData => {
+			   //When user creation on server is complete, retrieve and save data to local storage
+			   localStorage.setItem('userID', userData.userID)
+			   localStorage.setItem('username', userData.username)
+					 console.log(userData)
+		 
+			   this.setState({currentUsername: userData.username, currentUserID: userData.userID})
+		 
+			   //Notify Socket server is not ready to chat
+			   socket.emit("UserEnteredRoom", userData)
+			});
+		 
+			//Send Socket command to create user info for current user
+			socket.emit("CreateUserData")
+		 } 
+		 else {
+			//If user already has userid and username, notify server to allow them to join chat
+			this.setState({currentUsername: usernameVal, currentUserID: userIDVal})
+			socket.emit("UserEnteredRoom", {userID: userIDVal, username: usernameVal})
+		 }
 
+		 socket.on("RetrieveChatRoomData", (chatRoomData) => {
+			this.setState({chatRoomData: chatRoomData}, () => this.shouldScrollToBottom())
+		 })
+	}
+
+	componentWillUnmount(){
+		socket.off("RetrieveChatRoomData")
+		socket.off("SetUserData")
 	}
 
 
@@ -108,7 +132,14 @@ class ChatRoom extends Component {
 	}
 
 	sendMessageData(){
-		
+		var {message, currentUsername, currentUserID} = this.state
+
+if(message.length > 0){
+    //Send chat message to server...
+    socket.emit("SendMessage", {message: message, username: currentUsername, userID: currentUserID, timeStamp: null})
+    //Clear chat message textfield box
+    this.setState({message: ''})
+}
 	}
 
 
